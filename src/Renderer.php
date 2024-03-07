@@ -52,6 +52,8 @@ class Renderer implements Strategy
     }
 
     /**
+     * @deprecated
+     * @see Renderer::foreach
      * @param mixed $view
      * @param iterable<int, mixed> $items
      * @return FragmentCollection
@@ -64,13 +66,41 @@ class Renderer implements Strategy
 
     /**
      * @param mixed $view
-     * @param Closure $predicate
-     * @param mixed|null $data
+     * @param iterable<int, mixed> $items
      * @return FragmentCollection
      * @throws RenderException|Throwable
      */
+    public function foreach(iterable $items, mixed $view): FragmentCollection
+    {
+        return $this->render(new Loop($view, $items));
+    }
+
+    /**
+     * @param mixed $view
+     * @param Closure $predicate
+     * @param mixed|null $data
+     * @param mixed ...$args
+     * @return FragmentCollection
+     * @throws RenderException
+     * @throws Throwable
+     * @see Renderer::if
+     * @deprecated
+     */
     public function conditional(mixed $view, Closure $predicate, mixed $data = null, mixed ...$args): FragmentCollection
     {
+        return $this->render(new Conditional($view, $predicate), $data, ...$args);
+    }
+
+    /**
+     * @param Closure $predicate
+     * @param mixed $view
+     * @param mixed|null $data
+     * @param mixed ...$args
+     * @return FragmentCollection
+     * @throws RenderException
+     * @throws Throwable
+     */
+    public function if(Closure $predicate, mixed $view, mixed $data = null, mixed ...$args): FragmentCollection {
         return $this->render(new Conditional($view, $predicate), $data, ...$args);
     }
 

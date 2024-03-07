@@ -222,9 +222,9 @@ final class RendererTest extends TestCase
      */
     public function testShouldRenderListOfItemsInLoop(): void
     {
-        $view = fn(Renderer $renderer, array $items) => $renderer->loop(
-            fn(Renderer $renderer, string $item) => new Fragment("<p>$item</p>"),
-            $items
+        $view = fn(Renderer $renderer, array $items) => $renderer->foreach(
+            $items,
+            fn(Renderer $renderer, string $item) => new Fragment("<p>$item</p>")
         );
         self::assertEquals(
             '<p>foo</p><p>bar</p><p>baz</p>',
@@ -237,13 +237,13 @@ final class RendererTest extends TestCase
      */
     public function testShouldRenderConditionally(): void
     {
-        $view = fn(Renderer $renderer, array $items) => $renderer->loop(
-            fn(Renderer $renderer, string $item) => $renderer->conditional(
-                new Fragment("<p>$item</p>"),
+        $view = fn(Renderer $renderer, array $items) => $renderer->foreach(
+            $items,
+            fn(Renderer $renderer, string $item) => $renderer->if(
                 fn($item) => $item === 'foo',
+                new Fragment("<p>$item</p>"),
                 $item
-            ),
-            $items
+            )
         );
         self::assertEquals(
             '<p>foo</p>',
@@ -340,7 +340,7 @@ CSS
 
         $personList = fn(Renderer $r) => new Fragment(<<<HTML
 <ul>
-    {$r->loop(fn($data) => new Fragment("<li>{$data['id']}: {$data['name']}</li>"), $presidents)}
+    {$r->foreach($presidents, fn($data) => new Fragment("<li>{$data['id']}: {$data['name']}</li>"))}
 </ul>
 HTML
         );
