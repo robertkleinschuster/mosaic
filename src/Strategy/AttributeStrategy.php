@@ -44,16 +44,17 @@ class AttributeStrategy extends PipelineStrategy
             }
         }
 
-        $children = $this->next($view, $renderer, $data);
 
         if (!empty($attributes)) {
+            $children = fn() => $this->next($view, $renderer, $data);
             foreach (array_reverse($attributes) as $attribute) {
                 if ($attribute instanceof RenderableAttribute) {
                     $children = $renderer->render($attribute->render($renderer, $children, $data));
                 }
             }
+            return $this->next($children, $renderer, $data);
         }
 
-        return $children;
+        return $this->next($view, $renderer, $data);
     }
 }
