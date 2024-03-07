@@ -59,7 +59,7 @@ final class Placeholder implements Renderable
      * @param mixed|null $data
      * @return iterable<mixed, mixed>
      */
-    public function render(Renderer $renderer, mixed $data = null): iterable
+    public function render(Renderer $renderer, mixed $data): iterable
     {
         yield new Fragment(<<<HTML
 <script type="text/html" id="$this->code"></script>

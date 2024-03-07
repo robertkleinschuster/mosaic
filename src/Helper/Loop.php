@@ -38,7 +38,7 @@ final class Loop implements Renderable
      * @return iterable<mixed, mixed>
      * @throws RenderException|Throwable
      */
-    public function render(Renderer $renderer, mixed $data = null): iterable
+    public function render(Renderer $renderer, mixed $data): iterable
     {
         foreach ($this->items as $item) {
             yield $renderer->render($this->view, $item);

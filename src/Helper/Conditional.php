@@ -35,7 +35,7 @@ final class Conditional implements Renderable
      * @return iterable<mixed, mixed>
      * @throws Exception\RenderException|Throwable
      */
-    public function render(Renderer $renderer, mixed $data = null): iterable
+    public function render(Renderer $renderer, mixed $data): iterable
     {
         if (($this->predicate)($data) === true) {
             yield $renderer->render($this->view, $data);

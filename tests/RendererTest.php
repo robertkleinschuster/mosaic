@@ -87,7 +87,7 @@ final class RendererTest extends TestCase
         $nestingLevel = ini_get('xdebug.max_nesting_level');
         ini_set('xdebug.max_nesting_level', '5000');
         $view = new class implements Renderable {
-            public function render(Renderer $renderer, mixed $data = null): Generator
+            public function render(Renderer $renderer, mixed $data): Generator
             {
                 yield new static();
             }

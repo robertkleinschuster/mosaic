@@ -36,7 +36,7 @@ class LoopTest extends TestCase
 
         $result = '';
         /** @noinspection PhpLoopCanBeReplacedWithImplodeInspection */
-        foreach ($loop->render(new Renderer()) as $item) {
+        foreach ($loop->render(new Renderer(), null) as $item) {
             $result .= $item;
         }
 

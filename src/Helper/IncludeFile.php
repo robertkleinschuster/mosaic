@@ -13,7 +13,7 @@ readonly class IncludeFile implements Renderable
     {
     }
 
-    public function render(Renderer $renderer, mixed $data = null): iterable
+    public function render(Renderer $renderer, mixed $data): iterable
     {
         yield $data ?? 0 => require $this->file;
     }
