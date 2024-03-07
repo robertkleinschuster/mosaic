@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MosaicTest;
 
 use Generator;
+use MosaicTest\Helper\PrefixAttribute;
 use PHPUnit\Framework\TestCase;
 use Mosaic\Exception\RenderException;
 use Mosaic\Fragment;
@@ -138,6 +139,22 @@ final class RendererTest extends TestCase
         ];
 
         self::assertEquals(self::HELLO_WORLD_STRING, $this->renderer->render($view));
+    }
+
+    /**
+     * @throws RenderException
+     */
+    public function testShouldCaptureWithAttributes(): void
+    {
+        $view = [
+            new Placeholder('replace'),
+            [
+                #[PrefixAttribute('Prefix')] fn() => new Capture(new Placeholder('replace'), 'Hello '),
+                new Capture(new Placeholder('replace'), #[PrefixAttribute('world!')] fn() => ''),
+            ],
+        ];
+
+        self::assertEquals(self::HELLO_WORLD_STRING . ' Prefix ', (string)$this->renderer->render($view));
     }
 
     /**

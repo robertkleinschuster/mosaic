@@ -2,6 +2,7 @@
 
 namespace Mosaic;
 
+use Mosaic\Strategy\AttributeStrategy;
 use Mosaic\Strategy\CaptureStrategy;
 use Mosaic\Strategy\ClosureStrategy;
 use Mosaic\Strategy\Factory\PipelineStrategyFactory;
@@ -16,6 +17,7 @@ class StrategyPipelineFactory
     public function create(StrategyFactory ...$factories): StrategyPipeline
     {
         $factories[] = new PipelineStrategyFactory(CaptureStrategy::class);
+        $factories[] = new PipelineStrategyFactory(AttributeStrategy::class);
         return new StrategyPipeline(
             new InvalidViewStrategy(),
             new PipelineStrategyFactory(RenderableStrategy::class),
