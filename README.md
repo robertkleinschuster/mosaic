@@ -33,15 +33,15 @@ composer require robertkleinschuster/mosaic
 
 Here are examples for supported component types:
 
-### Closure Components
+### String Components
 
-Render PHP closures dynamically:
+Handle simple strings:
 
 ```php
-$renderer->render(function ($data) {
-    return "Hello, " . $data['name'];
-}, ['name' => 'world']);
+$renderer->render("Hello, world");
 ```
+
+Strings are escaped by default, to render html use a fragment.
 
 ### Fragment Components
 
@@ -52,13 +52,36 @@ $fragment = $renderer->fragment('<div>Hello, world</div>');
 $renderer->render($fragment);
 ```
 
+### Closure Components
+
+Render PHP closures dynamically:
+
+```php
+$renderer->render(function ($data) {
+    return "Hello, " . $data['name'];
+}, ['name' => 'world']);
+```
+
+The return value is evaluated as a component.
+
 ### Iterable Components
 
-Loop over iterable data structures:
+Loops over iterable of components:
 
 ```php
 $items = ['item1', 'item2', 'item3'];
 $renderer->render($items);
+```
+
+This is typically used with the PHP generator syntax:
+
+```php
+$items = ['item1', 'item2', 'item3'];
+$renderer->render(function() {
+    yield "first\n",
+    yield "second\n",
+    yield "third\n",
+});
 ```
 
 ### Renderable Components
@@ -66,21 +89,38 @@ $renderer->render($items);
 Utilize objects implementing the Renderable interface:
 
 ```php
-class MyComponent implements Renderable {
+class MyComponent implements \Mosaic\Renderable {
     public function render(\Mosaic\Renderer $renderer, $data) {
-        return $renderer->fragment("<div>Hello, {$data['name']}</div>");
+        yield $renderer->fragment("<div>Hello, {$data['name']}</div>");
     }
 }
 $renderer->render(new MyComponent(), ['name' => 'world']);
 ```
 
-### String Components
+In this example the PHP generator syntax is used to yield a child HTML fragment.
 
-Handle simple strings:
+### Attribute Components
+Wrap a class of closure another component using PHP-8 attributes.
 
 ```php
-$renderer->render("Hello, world");
+#[Attribute]
+class MyWrapper implements \Mosaic\RenderableAttribute {
+    public function render(\Mosaic\Renderer $renderer, mixed $children, mixed $data){
+        return $renderer->fragment(<<<HTML
+<p class="wrapper">
+    {$renderer->render($children, $data)}
+</p>
+HTML
+);
+    }
+}
 ```
+
+```php
+$renderer->render(#[MyWrapper] fn() => 'Hello world!')
+```
+
+The string "Hello world!" will now be rendered inside the paragraph defined in the MyWrapper component. 
 
 ## Extending Mosaic
 
