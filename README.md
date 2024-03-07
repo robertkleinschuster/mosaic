@@ -122,6 +122,12 @@ $renderer->render(#[MyWrapper] fn() => 'Hello world!')
 
 The string "Hello world!" will now be rendered inside the paragraph defined in the MyWrapper component. 
 
+## Passing parameters to components
+
+```php
+$renderer->render(fn(string $name) => "Hello $name!", name: 'world')
+```
+
 ## Extending Mosaic
 
 Its design allows for straightforward expansion, enabling developers to create custom rendering strategies, helper utilities, and more to meet specific application requirements.
