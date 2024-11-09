@@ -42,6 +42,9 @@ class AttributeStrategy extends PipelineStrategy
             foreach ($reflection->getAttributes() as $attribute) {
                 $attributes[] = $attribute->newInstance();
             }
+            foreach ($reflection->getMethod('render')->getAttributes() as $attribute) {
+                $attributes[] = $attribute->newInstance();
+            }
         }
 
 
