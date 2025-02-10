@@ -5,6 +5,7 @@ namespace Mosaic;
 use Mosaic\Strategy\AttributeStrategy;
 use Mosaic\Strategy\CaptureStrategy;
 use Mosaic\Strategy\ClosureStrategy;
+use Mosaic\Strategy\EnumStrategy;
 use Mosaic\Strategy\Factory\PipelineStrategyFactory;
 use Mosaic\Strategy\FragmentStrategy;
 use Mosaic\Strategy\InvalidViewStrategy;
@@ -23,6 +24,7 @@ class StrategyPipelineFactory
             new PipelineStrategyFactory(RenderableStrategy::class),
             new PipelineStrategyFactory(ClosureStrategy::class),
             new PipelineStrategyFactory(IterableStrategy::class),
+            new PipelineStrategyFactory(EnumStrategy::class),
             new PipelineStrategyFactory(StringStrategy::class),
             new PipelineStrategyFactory(FragmentStrategy::class),
             ...$factories,

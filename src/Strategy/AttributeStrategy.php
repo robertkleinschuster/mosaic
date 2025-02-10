@@ -9,12 +9,15 @@ use Mosaic\Exception\RenderException;
 use Mosaic\FragmentCollection;
 use Mosaic\Renderable;
 use Mosaic\RenderableAttribute;
+use Mosaic\RenderableEnum;
 use Mosaic\Renderer;
 use Mosaic\Strategy\Base\PipelineStrategy;
 use ReflectionClass;
+use ReflectionEnum;
 use ReflectionException;
 use ReflectionFunction;
 use Throwable;
+use UnitEnum;
 
 class AttributeStrategy extends PipelineStrategy
 {
@@ -47,6 +50,16 @@ class AttributeStrategy extends PipelineStrategy
             }
         }
 
+
+        if ($view instanceof RenderableEnum && $view instanceof UnitEnum) {
+            $reflection = new ReflectionEnum($view);
+            foreach ($reflection->getAttributes() as $attribute) {
+                $attributes[] = $attribute->newInstance();
+            }
+            foreach ($reflection->getCase($view->name)->getAttributes() as $attribute) {
+                $attributes[] = $attribute->newInstance();
+            }
+        }
 
         if (!empty($attributes)) {
             $children = fn() => $this->next($view, $renderer, $data);
