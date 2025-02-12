@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace Mosaic\Strategy;
 
-use Closure;
+use Mosaic\AttributeHelper;
 use Mosaic\Exception\RenderException;
 use Mosaic\FragmentCollection;
-use Mosaic\Renderable;
 use Mosaic\RenderableAttribute;
-use Mosaic\RenderableEnum;
 use Mosaic\Renderer;
 use Mosaic\Strategy\Base\PipelineStrategy;
-use ReflectionClass;
-use ReflectionEnum;
 use ReflectionException;
-use ReflectionFunction;
 use Throwable;
-use UnitEnum;
 
 class AttributeStrategy extends PipelineStrategy
 {
+    private AttributeHelper $attributeHelper;
+
+    protected function init(): void
+    {
+        parent::init();
+        $this->attributeHelper = new AttributeHelper();
+    }
+
+
     /**
      * @param mixed $view
      * @param Renderer $renderer
@@ -32,34 +35,7 @@ class AttributeStrategy extends PipelineStrategy
      */
     public function execute(mixed $view, Renderer $renderer, mixed $data): FragmentCollection
     {
-        $attributes = [];
-        if ($view instanceof Closure) {
-            $reflection = new ReflectionFunction($view);
-            foreach ($reflection->getAttributes() as $attribute) {
-                $attributes[] = $attribute->newInstance();
-            }
-        }
-
-        if ($view instanceof Renderable) {
-            $reflection = new ReflectionClass($view);
-            foreach ($reflection->getAttributes() as $attribute) {
-                $attributes[] = $attribute->newInstance();
-            }
-            foreach ($reflection->getMethod('render')->getAttributes() as $attribute) {
-                $attributes[] = $attribute->newInstance();
-            }
-        }
-
-
-        if ($view instanceof RenderableEnum && $view instanceof UnitEnum) {
-            $reflection = new ReflectionEnum($view);
-            foreach ($reflection->getAttributes() as $attribute) {
-                $attributes[] = $attribute->newInstance();
-            }
-            foreach ($reflection->getCase($view->name)->getAttributes() as $attribute) {
-                $attributes[] = $attribute->newInstance();
-            }
-        }
+        $attributes = $this->attributeHelper->getAttributes($view);
 
         if (!empty($attributes)) {
             $children = fn() => $this->next($view, $renderer, $data);
