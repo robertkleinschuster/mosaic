@@ -9,6 +9,7 @@ use Stringable;
 final readonly class Fragment implements Stringable
 {
     private array $args;
+
     public function __construct(public string|Stringable $content, string ...$args)
     {
         $this->args = $args;
@@ -19,7 +20,7 @@ final readonly class Fragment implements Stringable
         if (!empty($this->args)) {
             $args = [];
             foreach ($this->args as $key => $value) {
-                $args['{' . $key . '}'] = $value;
+                $args['{' . $key . '}'] = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8', false);
             }
             return strtr($this->content, $args);
         }

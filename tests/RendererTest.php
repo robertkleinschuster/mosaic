@@ -109,6 +109,11 @@ final class RendererTest extends TestCase
         self::assertEquals(0, $this->renderer->getLevel());
     }
 
+    public function testShouldEscapeHtml()
+    {
+        self::assertEquals('&lt;test&gt;', (string)$this->renderer->render("<test>"));
+    }
+
     /**
      * @throws RenderException
      */
