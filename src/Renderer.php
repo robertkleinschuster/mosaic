@@ -134,12 +134,14 @@ class Renderer implements Strategy
 
     /**
      * @param string $content
+     * @param string ...$args
      * @return FragmentCollection
-     * @throws RenderException|Throwable
+     * @throws RenderException
+     * @throws Throwable
      */
-    public function fragment(string $content): FragmentCollection
+    public function fragment(string $content, string ...$args): FragmentCollection
     {
-        return $this->render(new Fragment($content));
+        return $this->render(new Fragment($content, ...$args));
     }
 
     /**
