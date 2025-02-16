@@ -54,7 +54,7 @@ final class RenderException extends Exception
         }
         $type = self::getType($view);
         $error = get_class($throwable);
-        return new RenderException("$error in $type ({$throwable->getFile()}:{$throwable->getLine()}}): " . $throwable->getMessage(), 0, $throwable);
+        return new RenderException("$error in $type ({$throwable->getFile()}:{$throwable->getLine()}): " . $throwable->getMessage(), 0, $throwable);
     }
 
     /**
