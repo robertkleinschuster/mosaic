@@ -17,7 +17,7 @@ class ArgumentsList implements IteratorAggregate
      * @var iterable<int, mixed>
      */
     private iterable $list;
-    private ?Closure $callback;
+    private Closure $callback;
 
     /**
      * @param iterable<int, mixed> $list

@@ -13,6 +13,11 @@ readonly class IncludeFile implements Renderable
     {
     }
 
+    /**
+     * @param Renderer $renderer
+     * @param mixed $data
+     * @return iterable<mixed>
+     */
     public function render(Renderer $renderer, mixed $data): iterable
     {
         yield $data ?? 0 => require $this->file;

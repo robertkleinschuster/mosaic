@@ -31,7 +31,7 @@ final class Loop implements Renderable
     }
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings PHPMD.UnusedFormalParameter
      *
      * @param Renderer $renderer
      * @param mixed|null $data

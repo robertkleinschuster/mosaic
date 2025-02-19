@@ -6,11 +6,13 @@ namespace MosaicTest\Helper;
 
 use Mosaic\Helper\Arguments;
 use Mosaic\Helper\ArgumentsList;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentsListTest extends TestCase
 {
-    public function testShouldWrapIterableOfArraysInArgumentsObjects(): void
+    #[Test]
+    public function shouldWrapIterableOfArraysInArgumentsObjects(): void
     {
         $presidents = [
             [

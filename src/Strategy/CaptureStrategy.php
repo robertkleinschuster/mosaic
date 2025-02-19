@@ -77,8 +77,8 @@ final class CaptureStrategy extends PipelineStrategy
         $placeholders = [];
         $replacements = [];
         foreach ($this->placeholders as $placeholder) {
-            $placeholders[] = $renderer->render($placeholder->render($renderer, null));
-            $replacements[] = $renderer->render($placeholder->getReplacements());
+            $placeholders[] = (string)$renderer->render($placeholder->render($renderer, null));
+            $replacements[] = (string)$renderer->render($placeholder->getReplacements());
         }
 
         $result = new FragmentCollection();

@@ -5,6 +5,7 @@ namespace MosaicTest\Helper;
 use Mosaic\Exception\RenderException;
 use Mosaic\Helper\Conditional;
 use Mosaic\Renderer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ConditionalTest extends TestCase
@@ -12,7 +13,8 @@ class ConditionalTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldOnlyRenderWhenPredicateEvaluatesToTrue(): void
+    #[Test]
+    public function shouldOnlyRenderWhenPredicateEvaluatesToTrue(): void
     {
         $conditional = new Conditional('test', fn() => true);
         $result = $conditional->render(new Renderer(), null);
@@ -32,7 +34,8 @@ class ConditionalTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldPassDataToPredicate(): void
+    #[Test]
+    public function shouldPassDataToPredicate(): void
     {
         $conditional = new Conditional('test', fn($data) => 1 === $data);
         $result = $conditional->render(new Renderer(), null);

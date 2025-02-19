@@ -8,6 +8,7 @@ use Stringable;
 
 final readonly class Fragment implements Stringable
 {
+    /** @var string[]  */
     private array $args;
 
     public function __construct(public string|Stringable $content, string ...$args)

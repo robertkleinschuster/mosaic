@@ -11,7 +11,7 @@ use Mosaic\Renderer;
 #[Attribute]
 class OtherAttribute implements RenderableAttribute
 {
-    public function render(Renderer $renderer, mixed $children, mixed $data)
+    public function render(Renderer $renderer, mixed $children, mixed $data): mixed
     {
         yield 'other attribute';
         yield ' ';

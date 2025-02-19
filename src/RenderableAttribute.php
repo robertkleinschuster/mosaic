@@ -6,5 +6,5 @@ namespace Mosaic;
 
 interface RenderableAttribute
 {
-    public function render(Renderer $renderer, mixed $children, mixed $data);
+    public function render(Renderer $renderer, mixed $children, mixed $data): mixed;
 }

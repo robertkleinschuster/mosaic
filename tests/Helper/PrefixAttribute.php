@@ -15,7 +15,7 @@ class PrefixAttribute implements RenderableAttribute
     {
     }
 
-    public function render(Renderer $renderer, mixed $children, mixed $data)
+    public function render(Renderer $renderer, mixed $children, mixed $data): mixed
     {
         yield $this->prefix;
         yield ' ';

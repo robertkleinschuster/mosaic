@@ -12,7 +12,7 @@ use Mosaic\Strategy;
 final class InvalidViewStrategy implements Strategy
 {
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings PHPMD.UnusedFormalParameter
      *
      * @param mixed $view
      * @param Renderer $renderer

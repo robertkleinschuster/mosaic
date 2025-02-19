@@ -6,6 +6,7 @@ use Mosaic\Exception\RenderException;
 use Mosaic\Helper\ArgumentsList;
 use Mosaic\Helper\Loop;
 use Mosaic\Renderer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class LoopTest extends TestCase
@@ -13,7 +14,8 @@ class LoopTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldRenderViewForEachDataItem(): void
+    #[Test]
+    public function shouldRenderViewForEachDataItem(): void
     {
         $presidents = [
             [

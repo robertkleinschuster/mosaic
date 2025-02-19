@@ -12,11 +12,13 @@ use MosaicTest\Helper\RenderableWithMethodAttribute;
 use MosaicTest\Helper\TestEnum;
 use MosaicTest\Helper\TestStringEnum;
 use MosaicTest\Helper\TestStringEnumUnbacked;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AttributeStrategyTest extends TestCase
 {
-    public function testShouldWrapClosuresAndRenderablesInRenderableAttributes()
+    #[Test]
+    public function shouldWrapClosuresAndRenderablesInRenderableAttributes()
     {
         $view = #[OuterAttribute] #[OtherAttribute] fn() => 'inner view';
 
@@ -25,7 +27,8 @@ class AttributeStrategyTest extends TestCase
         $this->assertEquals('outer attribute other attribute inner view', (string)$result);
     }
 
-    public function testShouldRenderAttributesOnRenderable()
+    #[Test]
+    public function shouldRenderAttributesOnRenderable()
     {
         $view = new RenderableWithAttribute();
         $renderer = new Renderer();
@@ -33,7 +36,8 @@ class AttributeStrategyTest extends TestCase
         $this->assertEquals('prefix renderable', (string)$result);
     }
 
-    public function testShouldRenderAttributesOnRenderMethod()
+    #[Test]
+    public function shouldRenderAttributesOnRenderMethod()
     {
         $view = new RenderableWithMethodAttribute();
         $renderer = new Renderer();
@@ -41,21 +45,24 @@ class AttributeStrategyTest extends TestCase
         $this->assertEquals('prefix renderable', (string)$result);
     }
 
-    public function testShouldRenderAttributesOnEnumCases()
+    #[Test]
+    public function shouldRenderAttributesOnEnumCases()
     {
         $renderer = new Renderer();
         $result = $renderer->render(TestEnum::outer);
         $this->assertEquals('enum outer attribute ', (string)$result);
     }
 
-    public function testShouldEnumValues()
+    #[Test]
+    public function shouldRenderEnumValues()
     {
         $renderer = new Renderer();
         $result = $renderer->render(TestStringEnum::outer);
         $this->assertEquals('enum outer attribute outer value', (string)$result);
     }
 
-    public function testShouldNotRenderEnumValuesForNonRenderableBackedEnum()
+    #[Test]
+    public function shouldNotRenderEnumValuesForNonRenderableBackedEnum()
     {
         $renderer = new Renderer();
         $result = $renderer->render(TestStringEnumUnbacked::outer);

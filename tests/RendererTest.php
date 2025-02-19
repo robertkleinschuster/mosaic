@@ -6,6 +6,8 @@ namespace MosaicTest;
 
 use Generator;
 use MosaicTest\Helper\PrefixAttribute;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Mosaic\Exception\RenderException;
 use Mosaic\Fragment;
@@ -68,21 +70,15 @@ final class RendererTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProvider_ViewTypes
-     * @param mixed $view
-     * @return void
-     * @throws RenderException
-     */
-    public function testShouldRenderDifferentViewTypes($view): void
+    #[Test]
+    #[DataProvider('dataProvider_ViewTypes')]
+    public function shouldRenderDifferentViewTypes($view): void
     {
         self::assertEquals(self::HELLO_WORLD_STRING, $this->renderer->render($view));
     }
 
-    /**
-     * @throws RenderException
-     */
-    public function testShouldThrowExceptionForInfiniteRenderLoops(): void
+    #[Test]
+    public function shouldThrowExceptionForInfiniteRenderLoops(): void
     {
         $nestingLevel = ini_get('xdebug.max_nesting_level');
         ini_set('xdebug.max_nesting_level', '5000');
@@ -99,25 +95,22 @@ final class RendererTest extends TestCase
         ini_set('xdebug.max_nesting_level', $nestingLevel);
     }
 
-    /**
-     * @throws RenderException
-     */
-    public function testShouldResetLevel(): void
+    #[Test]
+    public function shouldResetLevel(): void
     {
         self::assertEquals(0, $this->renderer->getLevel());
         $this->renderer->render(['', ['']]);
         self::assertEquals(0, $this->renderer->getLevel());
     }
 
-    public function testShouldEscapeHtml()
+    #[Test]
+    public function shouldEscapeHtml()
     {
         self::assertEquals('&lt;test&gt;', (string)$this->renderer->render("<test>"));
     }
 
-    /**
-     * @throws RenderException
-     */
-    public function testShouldReplacePlaceholderWithCapture(): void
+    #[Test]
+    public function shouldReplacePlaceholderWithCapture(): void
     {
         $view = [
             new Placeholder('replace'),
@@ -130,10 +123,8 @@ final class RendererTest extends TestCase
         self::assertEquals(self::HELLO_WORLD_STRING, $this->renderer->render($view));
     }
 
-    /**
-     * @throws RenderException
-     */
-    public function testShouldAppendToCapture(): void
+    #[Test]
+    public function shouldAppendToCapture(): void
     {
         $view = [
             new Placeholder('replace'),
@@ -146,10 +137,8 @@ final class RendererTest extends TestCase
         self::assertEquals(self::HELLO_WORLD_STRING, $this->renderer->render($view));
     }
 
-    /**
-     * @throws RenderException
-     */
-    public function testShouldCaptureWithAttributes(): void
+    #[Test]
+    public function shouldCaptureWithAttributes(): void
     {
         $view = [
             new Placeholder('replace'),
@@ -162,10 +151,8 @@ final class RendererTest extends TestCase
         self::assertEquals(self::HELLO_WORLD_STRING . ' Prefix ', (string)$this->renderer->render($view));
     }
 
-    /**
-     * @throws RenderException
-     */
-    public function testShouldResetCaptures(): void
+    #[Test]
+    public function shouldResetCaptures(): void
     {
         $view = [
             new Placeholder('replace'),
@@ -189,10 +176,8 @@ final class RendererTest extends TestCase
     }
 
 
-    /**
-     * @throws RenderException
-     */
-    public function testShouldThrowExceptionWhenPlaceholderIsUsedMoreThenOnce(): void
+    #[Test]
+    public function shouldThrowExceptionWhenPlaceholderIsUsedMoreThenOnce(): void
     {
         self::expectExceptionObject(new RenderException('Placeholder "replace" already in use.'));
         $view = [
@@ -208,7 +193,8 @@ final class RendererTest extends TestCase
      * @noinspection PhpParamsInspection
      * @noinspection SpellCheckingInspection
      */
-    public function testShouldConvertThrowablesToRenderException(): void
+    #[Test]
+    public function shouldConvertThrowablesToRenderException(): void
     {
         // @phpstan-ignore-next-line
         $view = fn() => count(null);
@@ -225,7 +211,8 @@ final class RendererTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldRenderListOfItemsInLoop(): void
+    #[Test]
+    public function shouldRenderListOfItemsInLoop(): void
     {
         $view = fn(Renderer $renderer, array $items) => $renderer->foreach(
             $items,
@@ -240,7 +227,8 @@ final class RendererTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldRenderConditionally(): void
+    #[Test]
+    public function shouldRenderConditionally(): void
     {
         $view = fn(Renderer $renderer, array $items) => $renderer->foreach(
             $items,
@@ -259,7 +247,8 @@ final class RendererTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldPassArgumentsToClosure(): void
+    #[Test]
+    public function shouldPassArgumentsToClosure(): void
     {
         $view = fn(string $name, string $greeting) => "$greeting $name!";
         self::assertEquals(
@@ -271,7 +260,8 @@ final class RendererTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldPassIteratorKeyAsData(): void
+    #[Test]
+    public function shouldPassIteratorKeyAsData(): void
     {
         $view = fn() => yield Arguments::from(name: 'world') => fn(string $name) => "Hello $name!";
         self::assertEquals(self::HELLO_WORLD_STRING, $this->renderer->render($view));
@@ -280,7 +270,8 @@ final class RendererTest extends TestCase
     /**
      * @throws RenderException
      */
-    public function testShouldPassIteratorKeyAsArgumentsToClosure(): void
+    #[Test]
+    public function shouldPassIteratorKeyAsArgumentsToClosure(): void
     {
         $view = fn() => yield new Arguments(['greeting' => 'Hello', 'name' => 'world'])
         => fn(string $name, string $greeting) => "$greeting $name!";
@@ -291,7 +282,8 @@ final class RendererTest extends TestCase
      * @noinspection SpellCheckingInspection
      * @throws RenderException
      */
-    public function testShouldRenderExamplePage(): void
+    #[Test]
+    public function shouldRenderExamplePage(): void
     {
         $layout = fn(Renderer $r, string $title, string $language, $body) => new Fragment(<<<HTML
 <html lang="$language">
@@ -401,6 +393,4 @@ HTML
 HTML;
         self::assertEquals($expected, $result);
     }
-
-
 }
