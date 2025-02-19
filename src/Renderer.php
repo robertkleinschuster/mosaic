@@ -22,7 +22,7 @@ class Renderer implements Strategy
     private bool $wrapErrors = true;
     private bool $muteErrors = false;
 
-    public function __construct(Strategy $strategy = null, int $maxLevel = 256)
+    public function __construct(?Strategy $strategy = null, int $maxLevel = 256)
     {
         $this->strategy = $strategy ?? (new StrategyPipelineFactory())->create();
         $this->setMaxLevel($maxLevel);

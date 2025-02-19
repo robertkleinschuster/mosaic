@@ -23,7 +23,7 @@ class ArgumentsList implements IteratorAggregate
      * @param iterable<int, mixed> $list
      * @param Closure|null $callback
      */
-    public function __construct(iterable $list, Closure $callback = null)
+    public function __construct(iterable $list, ?Closure $callback = null)
     {
         $this->list = $list;
         $this->callback = $callback ?? fn($item) => new Arguments($item);

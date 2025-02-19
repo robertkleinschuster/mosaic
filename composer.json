@@ -31,7 +31,7 @@
     "phpstan/phpstan": "^2.1.5"
   },
   "scripts": {
-    "phpunit": "phpunit tests",
+    "phpunit": "phpunit tests --display-deprecations --display-warnings --display-notices",
     "phpstan": "phpstan analyse src --level 6"
   }
 }
