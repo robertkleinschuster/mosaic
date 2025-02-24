@@ -2,6 +2,7 @@
 
 namespace Mosaic;
 
+use Attribute;
 use Closure;
 use ReflectionClass;
 use ReflectionEnum;
@@ -25,9 +26,7 @@ class AttributeHelper
             foreach ($reflection->getAttributes() as $attribute) {
                 $attributes[] = $attribute->newInstance();
             }
-        }
-
-        if ($view instanceof Renderable) {
+        } else if ($view instanceof Renderable || $view instanceof RenderableAttribute) {
             $reflection = new ReflectionClass($view);
             foreach ($reflection->getAttributes() as $attribute) {
                 $attributes[] = $attribute->newInstance();
@@ -35,9 +34,7 @@ class AttributeHelper
             foreach ($reflection->getMethod('render')->getAttributes() as $attribute) {
                 $attributes[] = $attribute->newInstance();
             }
-        }
-
-        if ($view instanceof RenderableEnum && $view instanceof UnitEnum) {
+        } else if ($view instanceof RenderableEnum && $view instanceof UnitEnum) {
             $reflection = new ReflectionEnum($view);
             foreach ($reflection->getAttributes() as $attribute) {
                 $attributes[] = $attribute->newInstance();
@@ -47,6 +44,17 @@ class AttributeHelper
             }
         }
 
-        return $attributes;
+        $nestedAttributes = [];
+        foreach ($attributes as $attribute) {
+            if ($attribute instanceof RenderableAttribute) {
+                foreach ($this->getAttributes($attribute) as $nestedAttribute) {
+                    if (!$nestedAttribute instanceof Attribute) {
+                        $nestedAttributes[] = $nestedAttribute;
+                    }
+                }
+            }
+        }
+
+        return [...$attributes, ...$nestedAttributes];
     }
 }
